@@ -1,16 +1,13 @@
 package www.spring.com.empleados_2monolito.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "employess")
+@Table(name = "employees")
 public class EmployeeDTO {
 
     @Id
@@ -32,7 +29,7 @@ public class EmployeeDTO {
 
     @NotNull
     @Column(name="gender")
-    private Gender gender;
+    private String gender;
 
     @Column(name="hire_date")
     private LocalDate hireDate;
@@ -40,13 +37,11 @@ public class EmployeeDTO {
     @Column(name = "dept_no")
     private String deptNo;
 
-    @Column(name = "form_date")
+    @Column(name = "from_date")
     private LocalDate fromDate;
 
     @Column(name = "to_date")
     private LocalDate toDate;
-
-    public enum Gender{M,F};
 
     public EmployeeDTO() {
     }
@@ -92,11 +87,11 @@ public class EmployeeDTO {
         this.hireDate = hireDate;
     }
 
-    public Gender getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

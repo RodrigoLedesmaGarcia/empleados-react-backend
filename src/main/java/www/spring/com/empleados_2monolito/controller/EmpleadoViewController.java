@@ -13,7 +13,7 @@ import www.spring.com.empleados_2monolito.service.EmpleadoServiceImpl;
 import java.time.LocalDate;
 
 @Controller
-@RequestMapping("/ui/empleados")
+@RequestMapping("/ui/employees")
 public class EmpleadoViewController {
 
     private final EmpleadoServiceImpl service;
@@ -21,6 +21,7 @@ public class EmpleadoViewController {
     public EmpleadoViewController(EmpleadoServiceImpl service) {
         this.service = service;
     }
+
 
     @GetMapping({"", "/", " "})
     public String view(){
@@ -35,6 +36,7 @@ public class EmpleadoViewController {
 
         return str.isEmpty() ? null : str;
     }
+
 
     @PostMapping("/buscar")
     public String buscar(
@@ -57,17 +59,13 @@ public class EmpleadoViewController {
         deptNo = normalize(deptNo);
         gender = normalize(gender);
 
-        EmployeeDTO.Gender genderEnum = null;
-        if (genderEnum != null){
-            genderEnum = EmployeeDTO.Gender.valueOf(gender.toUpperCase());
-        }
 
         Page<EmployeeDTO> result = service.buscarConFiltros(
                 empNo,
                 birtDate,
                 firstName,
                 lastName,
-                genderEnum,
+                gender,
                 hireDate,
                 deptNo,
                 fromDate,

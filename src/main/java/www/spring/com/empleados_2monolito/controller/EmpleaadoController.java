@@ -9,9 +9,10 @@ import www.spring.com.empleados_2monolito.service.EmpleadoServiceImpl;
 
 import java.time.LocalDate;
 
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173")
 
-@RestController
+//@RestController
+@Controller
 @RequestMapping("/empleados")
 public class EmpleaadoController {
 
@@ -21,13 +22,15 @@ public class EmpleaadoController {
         this.service = service;
     }
 
+
+
     @GetMapping("/buscar")
     public ResponseEntity<Page<EmployeeDTO>> buscar(
             @RequestParam(required = false) Integer empNo,
             @RequestParam(required = false)LocalDate birthDate,
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
-            @RequestParam(required = false) EmployeeDTO.Gender gender,
+            @RequestParam(required = false) String gender,
             @RequestParam(required = false) LocalDate hireDate,
             @RequestParam(required = false) String deptNo,
             @RequestParam(required = false) LocalDate fromDate,

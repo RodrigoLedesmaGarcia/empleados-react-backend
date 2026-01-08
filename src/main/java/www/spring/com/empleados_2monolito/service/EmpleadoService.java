@@ -12,7 +12,7 @@ public interface EmpleadoService {
             LocalDate birthDate,
             String firstName,
             String lastName,
-            EmployeeDTO.Gender gender,
+            String gender,
             LocalDate hireDate,
             String deptNo,
             LocalDate fromDate,

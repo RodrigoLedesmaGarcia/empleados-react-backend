@@ -20,12 +20,11 @@ import java.util.List;
 public class EmpleadoServiceImpl implements EmpleadoService {
 
     private final JdbcTemplate jdbcTemplate;
-    private final EmpleadoRepository repository;
 
-    public EmpleadoServiceImpl(JdbcTemplate jdbcTemplate, EmpleadoRepository repository) {
+    public EmpleadoServiceImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.repository = repository;
     }
+
 
     @Override
     public Page<EmployeeDTO> buscarConFiltros(
@@ -33,7 +32,7 @@ public class EmpleadoServiceImpl implements EmpleadoService {
             LocalDate birthDate,
             String firstName,
             String lastName,
-            EmployeeDTO.Gender gender,
+            String gender,
             LocalDate hireDate,
             String deptNo,
             LocalDate fromDate,
@@ -55,7 +54,11 @@ public class EmpleadoServiceImpl implements EmpleadoService {
         if (birthDate != null) { baseSql.append(" AND e.birth_date = ? "); params.add(java.sql.Date.valueOf(birthDate)); }
         if (firstName != null && !firstName.isBlank()) { baseSql.append(" AND e.first_name LIKE ? "); params.add("%" + firstName.trim() + "%"); }
         if (lastName != null && !lastName.isBlank()) { baseSql.append(" AND e.last_name LIKE ? "); params.add("%" + lastName.trim() + "%"); }
-        if (gender != null) { baseSql.append(" AND e.gender = ? "); params.add(gender.name()); }
+        if (gender != null && !gender.isBlank()) {
+            baseSql.append(" AND UPPER(TRIM(e.gender)) = ? ");
+            params.add(gender.trim().toUpperCase());
+        }
+
         if (hireDate != null) { baseSql.append(" AND e.hire_date = ? "); params.add(java.sql.Date.valueOf(hireDate)); }
         if (deptNo != null && !deptNo.isBlank()) { baseSql.append(" AND de.dept_no = ? "); params.add(deptNo.trim()); }
         if (fromDate != null) { baseSql.append(" AND de.from_date >= ? "); params.add(java.sql.Date.valueOf(fromDate)); }
@@ -103,12 +106,8 @@ public class EmpleadoServiceImpl implements EmpleadoService {
             dto.setBirthDate(getLocalDateSafe(rs, "birth_date"));
             dto.setFirstName(rs.getString("first_name"));
             dto.setLastName(rs.getString("last_name"));
-
-            String gender = rs.getString("gender");
-            if (gender != null) dto.setGender(EmployeeDTO.Gender.valueOf(gender));
-
+            dto.setGender(rs.getString("gender"));
             dto.setHireDate(getLocalDateSafe(rs, "hire_date"));
-
             dto.setDeptNo(rs.getString("dept_no"));
             dto.setFromDate(getLocalDateSafe(rs, "from_date"));
             dto.setToDate(getLocalDateSafe(rs, "to_date"));
